@@ -2,7 +2,8 @@ var reloadCounter = 0;
 var pauseTime     = 5000;
 var counterDisplay= initCounter();
 var thisFrame = null;
-var searchUrl = 'https://www.baidu.com/s?wd=save%20japari%20site%3Ajapari.info';
+var searchKey = 'save japari';
+var searchUrl = 'https://www.baidu.com/s?wd='+encodeURI(searchKey);
 var baseUrl = 'https://www.baidu.com/link?url=G4skpGoUe7JB-IqqDQqBI4tA7wLNlqAxNAC6n7h_oE6Pj4WBST1SFs12WbpVk3Ni&wd=&eqid=';
 
 (function(){
@@ -32,8 +33,10 @@ function nextTask(){
     var doc = evt.target.contentDocument;
     jq(doc).ready(function(){
       var eqid = jq('script').map(function(i, e){
-        return e.textContent.match(/bds.comm.eqid = "(\w+)"/);
+        var re = e.textContent.match(/bds.comm.eqid = "(\w+)"/);
+        return re && re[1];
       })[0];
+      console.log(eqid);
       var finished = false;
       var nextFrame = document.createElement('iframe');
       nextFrame.src = baseUrl + eqid;
